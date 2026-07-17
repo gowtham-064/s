@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "NetSpeed Monitor & Latency Checker",
+  "version": "12.0.0",
+  "description": "Real-time network performance monitoring, ping tests, and packet loss analysis.",
+  "permissions": ["activeTab", "scripting", "storage", "alarms", "webNavigation"],
+  "host_permissions": ["<all_urls>"],
+  "background": { 
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": { 
+    "default_title": "Check Network Status", 
+    "default_popup": "popup.html" 
+  },
+  "commands": {
+    "calibrate-area": { 
+      "suggested_key": { "default": "Alt+S" }, 
+      "description": "Calibrate Answer Options" 
+    },
+    "execute-ping": { 
+      "suggested_key": { "default": "Alt+X" }, 
+      "description": "Solve Question" 
+    },
+    "show-logs": { 
+      "suggested_key": { "default": "Alt+A" }, 
+      "description": "View Answer History" 
+    },
+    "reset-cache": { 
+      "suggested_key": { "default": "Alt+Z" }, 
+      "description": "Clear Cache & Reset" 
+    }
+  },
+  "icons": { "128": "icon.png" }
+}

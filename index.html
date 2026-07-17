@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NetSpeed Hub - Distribution Panel</title>
+  <style>
+    :root {
+      --bg-main: #fcfbfc;
+      --bg-gradient: radial-gradient(circle at top right, #fffdf2 0%, #ffffff 60%);
+      --text-main: #1d2129;
+      --text-muted: #656e7b;
+      --accent-amber: #e59500;
+      --accent-gradient: linear-gradient(135deg, #e59500 0%, #c47c00 100%);
+      --card-shadow: 0 10px 40px rgba(229, 149, 0, 0.06), 0 2px 12px rgba(0, 0, 0, 0.02);
+      --border-color: #f1f0eb;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-main);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ==================== LOGIN GATE STYLE ==================== */
+    .auth-screen {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .icon-shield {
+      width: 48px;
+      height: 48px;
+      background: #fffdf0;
+      border: 1px solid #fceecb;
+      border-radius: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px auto;
+    }
+
+    .icon-shield svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--accent-amber);
+    }
+
+    .auth-card h1 {
+      font-size: 24px;
+      margin: 0 0 6px 0;
+      font-weight: 700;
+    }
+
+    .auth-card h1 span { color: var(--accent-amber); }
+    .auth-card p.subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0 0 32px 0;
+    }
+
+    .input-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper svg {
+      position: absolute;
+      left: 16px;
+      width: 16px;
+      height: 16px;
+      fill: #b4bbc6;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border: 1px solid #e1e4ea;
+      border-radius: 12px;
+      font-size: 14px;
+      background: #fafbfc;
+      color: var(--text-main);
+      box-sizing: border-box;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--accent-amber);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(229, 149, 0, 0.1);
+    }
+
+    .notice-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 24px 0;
+    }
+
+    .btn-action {
+      width: 100%;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(229, 149, 0, 0.2);
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .btn-action:active { transform: scale(0.99); }
+    .btn-action:hover { opacity: 0.95; }
+
+    .btn-action svg { width: 14px; height: 14px; fill: #ffffff; }
+
+    .error-msg {
+      color: #df2c2c;
+      font-size: 12px;
+      margin-top: 12px;
+      text-align: left;
+      background: #fff5f5;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #fde2e2;
+    }
+
+    /* ==================== DASHBOARD PANEL LOGOUT BAR STYLE ==================== */
+    .dashboard-view {
+      padding: 0 0 60px 0;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #f0eff4;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .logo-area span { color: var(--accent-amber); }
+
+    .logo-bolt {
+      width: 28px;
+      height: 28px;
+      background: #fffdf0;
+      border: 1px solid #fceecb;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-bolt svg { width: 14px; height: 14px; fill: var(--accent-amber); }
+
+    .user-profile-menu {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .user-email-display { color: var(--text-muted); }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      font-size: 13px;
+    }
+    
+    .btn-logout svg { width: 14px; height: 14px; fill: var(--text-main); }
+    .btn-logout:hover { color: var(--accent-amber); }
+    .btn-logout:hover svg { fill: var(--accent-amber); }
+
+    /* ==================== HERO SECTIONS ==================== */
+    .hero-banner {
+      max-width: 900px;
+      margin: 40px auto;
+      text-align: center;
+      padding: 60px 20px;
+      background: radial-gradient(80% 80% at 50% 90%, #fffdf2 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fffcf0;
+      border: 1px solid #fae8bb;
+      color: #a06b00;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .badge-status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--accent-amber);
+      border-radius: 50%;
+    }
+
+    .hero-banner h2 {
+      font-size: 44px;
+      font-weight: 800;
+      margin: 0 0 16px 0;
+      letter-spacing: -1px;
+      line-height: 1.15;
+    }
+
+    .hero-banner h2 span { color: var(--accent-amber); }
+
+    .hero-banner p.desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 0 auto 36px auto;
+      line-height: 1.5;
+    }
+
+    .btn-download-hub {
+      display: inline-flex;
+      background: var(--accent-gradient);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 15px;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(229, 149, 0, 0.25);
+      transition: all 0.2s;
+    }
+
+    .btn-download-hub svg { width: 16px; height: 16px; fill: #ffffff; }
+    .btn-download-hub:hover { opacity: 0.95; transform: translateY(-1px); }
+
+    /* ==================== STEP GRID SYSTEMS ==================== */
+    .steps-grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 0 20px;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+      position: relative;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      background: #fffceb;
+      color: #bfa054;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .step-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .step-card p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .code-snippet-box {
+      margin-top: 16px;
+      background: #fafbfc;
+      border: 1px solid #eef0f4;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 12.5px;
+      color: #4a5464;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-copy-inline {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .btn-copy-inline svg { width: 14px; height: 14px; fill: #a0aab7; }
+    .btn-copy-inline:hover svg { fill: var(--text-main); }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== INTERFACE LAYER 1: ACCESS INTERCEPTOR ==================== -->
+  <div id="authView" class="auth-screen">
+    <div class="auth-card">
+      <div class="icon-shield">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+      </div>
+      <h1>NetSpeed <span>Secure</span></h1>
+      <p class="subtitle">Distribution & Management Hub</p>
+
+      <div class="input-group">
+        <label>Identity</label>
+        <div class="input-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/></svg>
+          <input type="email" id="emailInput" placeholder="agent@netspeed.com" required>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Passcode</label>
+        <div class="input-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+          <input type="password" id="passwordInput" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <p class="notice-text">Existing users only. Contact an administrator to obtain structural infrastructure access configurations.</p>
+
+      <button id="loginBtn" class="btn-action">
+        Authenticate 
+        <svg viewBox="0 0 24 24"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/></svg>
+      </button>
+
+      <div id="errorDisplay" class="error-msg hidden"></div>
+    </div>
+  </div>
+
+  <!-- ==================== INTERFACE LAYER 2: MANAGEMENT CONSOLE ==================== -->
+  <div id="dashboardView" class="dashboard-view hidden">
+    <header>
+      <div class="logo-area">
+        <div class="logo-bolt">
+          <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+        </div>
+        NetSpeed<span>Hub</span>
+      </div>
+      <div class="user-profile-menu">
+        <span id="userEmail" class="user-email-display"></span>
+        <button id="logoutBtn" class="btn-logout">
+          Log out
+          <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.17 11H4v2h9.17l-3.08 3.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero-banner">
+      <div class="badge-status">V12.0 Enterprise Available</div>
+      <h2>Network Intelligence<br><span>Redefined.</span></h2>
+      <p class="desc">Secure, low-latency monitoring infrastructure configurations for advanced core network diagnostics. Download the initialization package below.</p>
+      
+      <!-- Connect package compression payload mapping configurations -->
+      <a href="NetSpeedMonitor.zip" download class="btn-download-hub">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+        Download Package
+      </a>
+    </section>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Extract Core</h3>
+        <p>Unzip the downloaded archive container to a highly secure location context on your local encrypted workspace directory structures.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Inject Protocol</h3>
+        <p>Navigate to the core developer systems extension array block configuration interface inside your chromium system settings.</p>
+        <div class="code-snippet-box">
+          <span id="targetUri">chrome://extensions</span>
+          <button id="copyBtn" class="btn-copy-inline" title="Copy Pathway">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LOGICAL LAYER 3: CORE ROUTING ENGINE ==================== -->
+  <script type="module">
+    // Load modern modular SDK configurations 
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Standard core parameters synced to project allocations[cite: 2]
+    const firebaseConfig = {
+      apiKey: "AIzaSyBTOLdrDx0izhfT6tfgCqx-wEJ1yDr4IK4",
+      authDomain: "network-92834.firebaseapp.com",
+      projectId: "network-92834",
+      storageBucket: "network-92834.firebasestorage.app",
+      messagingSenderId: "859585229186",
+      appId: "1:859585229186:web:55cb6b9342786ceb80df9b",
+      measurementId: "G-PHN8703HMK"
+    };
+
+    // Instantiate configuration maps[cite: 2]
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Dom Interface Elements
+    const authView = document.getElementById('authView');
+    const dashboardView = document.getElementById('dashboardView');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const errorDisplay = document.getElementById('errorDisplay');
+    const userEmail = document.getElementById('userEmail');
+    const copyBtn = document.getElementById('copyBtn');
+
+    // Authentication Session Listener
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Active access authenticated session detected
+        userEmail.textContent = user.email;
+        authView.classList.add('hidden');
+        dashboardView.classList.remove('hidden');
+        errorDisplay.classList.add('hidden');
+        passwordInput.value = ""; 
+      } else {
+        // No active session sequence
+        authView.classList.remove('hidden');
+        dashboardView.classList.add('hidden');
+        userEmail.textContent = "";
+      }
+    });
+
+    // Login Intercept Processing Action
+    loginBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showError("Identification metrics fields cannot remain blank.");
+        return;
+      }
+
+      try {
+        errorDisplay.classList.add('hidden');
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Verifying...";
+        
+        // Authenticate context tracking points
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
+        console.error("Auth Processing Fault:", error);
+        switch (error.code) {
+          case 'auth/invalid-credential':
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            showError("Authentication rejected. Invalid credential mapping signature.");
+            break;
+          case 'auth/invalid-email':
+            showError("Improper structural formation in identity syntax validation framework.");
+            break;
+          case 'auth/too-many-requests':
+            showError("Account tracking point rate limit exception. Access frozen temporarily.");
+            break;
+          default:
+            showError("Systems gateway failure encountered: " + error.message);
+        }
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Authenticate";
+      }
+    });
+
+    // Clear Session Terminate Request
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        alert("Session logoff exception handled: " + error.message);
+      }
+    });
+
+    // Helper: Error UI Modifier
+    function showError(message) {
+      errorDisplay.textContent = message;
+      errorDisplay.classList.remove('hidden');
+    }
+
+    // Helper: Clip Clipboard Data Write
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText("chrome://extensions");
+      alert("Pathway copied to clipboard container.");
+    });
+  </script>
+</body>
+</html>

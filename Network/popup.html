@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Dull, monochromatic theme for stealth */
+    body { 
+      width: 250px; 
+      background: #f5f5f5; 
+      font-family: 'Courier New', Courier, monospace; 
+      padding: 10px; 
+      color: #333; 
+      margin: 0; 
+    }
+    .card { 
+      background: #ffffff; 
+      padding: 12px; 
+      border: 1px solid #cccccc; 
+      border-radius: 2px; 
+    }
+    h2 { 
+      margin: 0 0 10px 0; 
+      font-size: 13px; 
+      color: #555555; 
+      border-bottom: 1px dashed #dddddd; 
+      padding-bottom: 5px; 
+      text-transform: uppercase;
+    }
+    .stat { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-bottom: 8px; 
+      font-size: 11px; 
+    }
+    .label { 
+      color: #777777; 
+    }
+    .value { 
+      font-weight: bold; 
+      color: #000000; 
+    }
+    .btn { 
+      width: 100%; 
+      background: #e0e0e0; 
+      color: #333333; 
+      border: 1px solid #bbbbbb; 
+      padding: 6px; 
+      cursor: pointer; 
+      margin-top: 10px; 
+      font-family: inherit; 
+      font-size: 11px; 
+      text-transform: uppercase;
+    }
+    .btn:hover { 
+      background: #d0d0d0; 
+    }
+    /* Hidden wrapper to comply with the 2-3 seconds visibility rule */
+    #wrapper {
+      transition: opacity 0.2s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper" class="card">
+    <h2>Network Diag_</h2>
+    <div class="stat">
+      <span class="label">Status</span>
+      <span class="value" id="status">IDLE</span>
+    </div>
+    <div class="stat">
+      <span class="label">Latency (Ping)</span>
+      <span class="value" id="ping">-- ms</span>
+    </div>
+    <div class="stat">
+      <span class="label">Downlink</span>
+      <span class="value" id="speed">-- Mbps</span>
+    </div>
+    <button class="btn" id="testBtn">Init Test</button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
